@@ -728,15 +728,15 @@ int Disassemble8080p(unsigned char *codebuffer, int pc) {
             printf("RET");
             break;
         case 0xda:
-            printf("JC     $%02x%02x", code[2], code[1]);
+            printf("JC\t$%02x%02x", code[2], code[1]);
             opbytes = 3;
             break;
         case 0xdb:
-            printf("IN     #$%02x", code[1]);
+            printf("IN\t#$%02x", code[1]);
             opbytes = 2;
             break;
         case 0xdc:
-            printf("CC     $%02x%02x", code[2], code[1]);
+            printf("CC\t$%02x%02x", code[2], code[1]);
             opbytes = 3;
             break;
         case 0xdd:
