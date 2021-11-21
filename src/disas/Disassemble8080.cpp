@@ -29,7 +29,7 @@ int Disassemble8080::DisassembleFile() {
 
     while (pc < fsize)
     {
-        pc += this->ReadInstruction(buffer, pc);
+        pc += this->ProcessInstruction(buffer, pc);
     }
     return 0;
 }

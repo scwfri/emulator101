@@ -13,7 +13,6 @@ class FileProcessor {
     int ProcessFile();
 
   private:
-    Processor8080 processor;
     const char *fname;
 };
 

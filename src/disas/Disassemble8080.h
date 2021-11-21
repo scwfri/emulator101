@@ -1,8 +1,6 @@
 #ifndef EMULATOR101_DISASSEMBLE8080_H
 #define EMULATOR101_DISASSEMBLE8080_H
 
-#include "../../processor8080/Processor8080.h"
-
 class Disassemble8080 {
   public:
     Disassemble8080() = delete;

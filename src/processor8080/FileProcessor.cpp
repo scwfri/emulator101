@@ -27,7 +27,7 @@ int FileProcessor::ProcessFile() {
     int pc = 0;
     while (pc < fsize)
     {
-        pc += this->processor.ProcessInstruction(buffer, pc);
+        //pc += this->processpc(buffer, pc);
     }
     return 0;
 }

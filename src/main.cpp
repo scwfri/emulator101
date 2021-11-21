@@ -1,12 +1,10 @@
+#include "disas/Disassemble8080.h"
+#include "emulator/Emulator8080.h"
+
 #include <cstdio>
 #include <cstdlib>
 #include <string>
 
-#include "../disas/Disassemble8080.h"
-#include "../emulator/Emulator8080.h"
-
-// forward declaration
-int Disassemble8080p(unsigned char *, int);
 
 int main(int argc, char **argv) {
     std::string arg = argv[1];
@@ -19,6 +17,6 @@ int main(int argc, char **argv) {
         delete disas;
     } else if (arg == "-E") {
         auto *emulator = new Emulator8080(argv[2]);
-        auto rval = emulator->ProcessInstruction();
+        //auto rval = emulator->ProcessInstruction();
     }
 }

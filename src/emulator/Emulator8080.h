@@ -1,8 +1,6 @@
 #ifndef EMULATOR101_EMULATOR8080_H
 #define EMULATOR101_EMULATOR8080_H
 
-#include "../../processor8080/Processor8080.h"
-
 #include <cstdint>
 
 class Emulator8080 {
@@ -14,17 +12,17 @@ class Emulator8080 {
 
   public:
     explicit Emulator8080(const char *);
-    int ProcessInstruction();
+    void ProcessInstruction();
     void UnimplementedInstruction();
 
   private:
     struct ConditionCodes {
-        uint8_t z{} : 1;
-        uint8_t s{} : 1;
-        uint8_t p{} : 1;
-        uint8_t cy{} : 1;
-        uint8_t ac{} : 1;
-        uint8_t pad{} : 3;
+        uint8_t z : 1;
+        uint8_t s : 1;
+        uint8_t p : 1;
+        uint8_t cy : 1;
+        uint8_t ac : 1;
+        uint8_t pad : 3;
     };
 
     struct State8080 {

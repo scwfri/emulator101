@@ -5,12 +5,12 @@
 
 Emulator8080::Emulator8080(const char *fname) : fname(fname) {
     this->state8080 = new State8080();
-    this->InitState();
+    //this->InitState();
 }
 
 Emulator8080::~Emulator8080() { delete this->state8080; }
 
-int Emulator8080::ProcessInstruction() {
+void Emulator8080::ProcessInstruction() {
     auto state = this->state8080;
     unsigned char *opcode = &state->memory[state->pc];
 
