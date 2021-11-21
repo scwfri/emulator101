@@ -1,0 +1,12 @@
+Language: Cpp
+BasedOnStyle: LLVM
+IndentCaseLabels: true
+IndentWidth: 4
+MaxEmptyLinesToKeep: 2
+PointerAlignment: Right
+SortIncludes: 'CaseInsensitive'
+SpaceAfterCStyleCast: true
+SpaceInEmptyParentheses: false
+TabWidth: 4
+UseTab: Never
+BreakConstructorInitializers: BeforeColon
