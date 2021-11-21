@@ -1,17 +1,24 @@
 #include <cstdio>
 #include <cstdlib>
+#include <string>
 
 #include "../disas/Disassemble8080.h"
+#include "../emulator/Emulator8080.h"
 
 // forward declaration
 int Disassemble8080p(unsigned char *, int);
 
 int main(int argc, char **argv) {
-    auto *disas = new Disassemble8080(argv[1]);
-    auto rval = disas->DisassembleFile();
-    if (rval != 0) {
-        printf("Error disassembling");
+    std::string arg = argv[1];
+    if (arg == "-D") {
+        auto *disas = new Disassemble8080(argv[2]);
+        auto rval = disas->DisassembleFile();
+        if (rval != 0) {
+            printf("Error disassembling");
+        }
+        delete disas;
+    } else if (arg == "-E") {
+        auto *emulator = new Emulator8080(argv[2]);
+        auto rval = emulator->ProcessInstruction();
     }
-    delete disas;
 }
-

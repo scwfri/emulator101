@@ -9,7 +9,7 @@ Disassemble8080::Disassemble8080(const char *fname) : fname(fname) {
 
 int Disassemble8080::DisassembleFile() {
     FILE *f= fopen(this->fname, "rb");
-    if (f==NULL)
+    if (f == nullptr)
     {
         printf("error: Couldn't open %s\n", this->fname);
         exit(1);
@@ -34,7 +34,7 @@ int Disassemble8080::DisassembleFile() {
     return 0;
 }
 
-int Disassemble8080::ReadInstruction(unsigned char *codebuffer, int pc) {
+int Disassemble8080::ProcessInstruction(unsigned char *codebuffer, int pc) {
         unsigned char *code = &codebuffer[pc];
         int opbytes = 1;
         printf("%04x ", pc);
