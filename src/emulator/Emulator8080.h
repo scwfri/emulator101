@@ -12,10 +12,14 @@ class Emulator8080 {
 
   public:
     explicit Emulator8080(const char *);
-    void ProcessInstruction();
+    int InitEmulator();
     void UnimplementedInstruction();
 
   private:
+    int Process();
+
+  private:
+
     struct ConditionCodes {
         uint8_t z : 1;
         uint8_t s : 1;
@@ -39,7 +43,6 @@ class Emulator8080 {
         uint16_t pc{};
         struct ConditionCodes cc;
     };
-
   private:
     State8080 *state8080;
     const char *fname;

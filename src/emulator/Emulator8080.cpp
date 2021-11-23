@@ -5,12 +5,39 @@
 
 Emulator8080::Emulator8080(const char *fname) : fname(fname) {
     this->state8080 = new State8080();
-    //this->InitState();
+    this->InitEmulator();
 }
 
 Emulator8080::~Emulator8080() { delete this->state8080; }
 
-void Emulator8080::ProcessInstruction() {
+int Emulator8080::InitEmulator() {
+    FILE *f = fopen(this->fname, "rb");
+    if (f == nullptr) {
+        printf("error: Couldn't open %s\n", this->fname);
+        exit(1);
+    }
+
+    // Get the file size and read it into a memory buffer
+    fseek(f, 0L, SEEK_END);
+    int fsize = ftell(f);
+    fseek(f, 0L, SEEK_SET);
+
+    // TODO need to read this into memory for Emulator or store in buffer for
+    // Disassembler
+    auto buff = static_cast<unsigned char *>(malloc(fsize));
+    this->state8080->memory = buff;
+
+    fread(buff, fsize, 1, f);
+    fclose(f);
+
+    auto pc = &this->state8080->pc;
+    while (*pc < fsize) {
+        *pc += this->Process();
+    }
+    return 0;
+}
+
+int Emulator8080::Process() {
     auto state = this->state8080;
     unsigned char *opcode = &state->memory[state->pc];
 
@@ -211,14 +238,14 @@ void Emulator8080::ProcessInstruction() {
         case 0x40:
             this->UnimplementedInstruction();
             break;
-        case 0x41:
-            state->c;
+        case 0x41: // MOV B,C
+            state->b = state->c;
             break;
-        case 0x42:
-            state->d;
+        case 0x42: // MOV B, D
+            state->b = state->d;
             break;
-        case 0x43:
-            state->e;
+        case 0x43: // MOV B,E
+            state->b = state->e;
             break;
         case 0x44:
             this->UnimplementedInstruction();
@@ -400,26 +427,67 @@ void Emulator8080::ProcessInstruction() {
         case 0x7f:
             this->UnimplementedInstruction();
             break;
-        case 0x80:
-            this->UnimplementedInstruction();
+        case 0x80: // ADD B
+            uint16_t res = (uint16_t) state->a + (uint16_t) state->b;
+            state->cc.z = ((res & 0xff) == 0); // zero flag if res == 0
+            state->cc.s = ((res & 0x08) != 0); // sign flag is bit 7 is set
+            state->cc.cy = (res > 0xff); // carry flag
+            state->cc.p = 0; // TODO placeholder; fix this
+            state->a = res & 0xff; // store our res value
             break;
-        case 0x81:
-            this->UnimplementedInstruction();
+        case 0x81: // ADD C
+            (uint16_t) res = (uint16_t) state->a + (uint16_t) state->c;
+            state->cc.z = ((res & 0xff) == 0);
+            state->cc.s = ((res & 0x80) != 0);
+            state->cc.cy = (res > 0xff);
+            // TODO implement parity check
+            state->cc.p = 0; // TODO iplement this
+            state->a = res & 0xff;
             break;
-        case 0x82:
-            this->UnimplementedInstruction();
+        case 0x82: // ADD D
+            (uint16_t) res = (uint16_t) state->a + (uint16_t) state->d;
+            state->cc.z = ((res & 0xff) == 0);
+            state->cc.s = ((res & 0x80) != 0);
+            state->cc.cy = (res > 0xff);
+            // TODO implement parity check
+            state->cc.p = 0; // TODO iplement this
+            state->a = res & 0xff;
             break;
-        case 0x83:
-            this->UnimplementedInstruction();
+        case 0x83: // ADD E
+            (uint16_t) res = (uint16_t) state->a + (uint16_t) state->e;
+            state->cc.z = ((res & 0xff) == 0);
+            state->cc.s = ((res & 0x80) != 0);
+            state->cc.cy = (res > 0xff);
+            // TODO implement parity check
+            state->cc.p = 0; // TODO iplement this
+            state->a = res & 0xff;
             break;
-        case 0x84:
-            this->UnimplementedInstruction();
+        case 0x84: // ADD H
+            (uint16_t) res = (uint16_t) state->a + (uint16_t) state->h;
+            state->cc.z = ((res & 0xff) == 0);
+            state->cc.s = ((res & 0x80) != 0);
+            state->cc.cy = (res > 0xff);
+            // TODO implement parity check
+            state->cc.p = 0; // TODO iplement this
+            state->a = res & 0xff;
             break;
-        case 0x85:
-            this->UnimplementedInstruction();
+        case 0x85: // ADD L
+            (uint16_t) res = (uint16_t) state->a + (uint16_t) state->l;
+            state->cc.z = ((res & 0xff) == 0);
+            state->cc.s = ((res & 0x80) != 0);
+            state->cc.cy = (res > 0xff);
+            // TODO implement parity check
+            state->cc.p = 0; // TODO iplement this
+            state->a = res & 0xff;
             break;
-        case 0x86:
-            this->UnimplementedInstruction();
+        case 0x86: // ADD M
+            (uint16_t) res = (uint16_t) state->a + (uint16_t) state->m;
+            state->cc.z = ((res & 0xff) == 0);
+            state->cc.s = ((res & 0x80) != 0);
+            state->cc.cy = (res > 0xff);
+            // TODO implement parity check
+            state->cc.p = 0; // TODO iplement this
+            state->a = res & 0xff;
             break;
         case 0x87:
             this->UnimplementedInstruction();
@@ -786,7 +854,7 @@ void Emulator8080::ProcessInstruction() {
             break;
     }
 
-    state->pc += 1;
+    return 1;
 }
 
 void Emulator8080::UnimplementedInstruction() {

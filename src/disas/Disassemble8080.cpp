@@ -7,7 +7,7 @@
 Disassemble8080::Disassemble8080(const char *fname) : fname(fname) {
 }
 
-int Disassemble8080::DisassembleFile() {
+int Disassemble8080::Process() {
     FILE *f= fopen(this->fname, "rb");
     if (f == nullptr)
     {

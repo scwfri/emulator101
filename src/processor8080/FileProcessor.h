@@ -9,7 +9,7 @@ class FileProcessor {
     FileProcessor &operator=(const FileProcessor &) = delete;
 
   public:
-    FileProcessor(const char *);
+    explicit FileProcessor(const char *);
     int ProcessFile();
 
   private:

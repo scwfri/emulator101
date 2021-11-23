@@ -9,7 +9,7 @@ class Disassemble8080 {
     Disassemble8080 &operator=(const Disassemble8080 &) = delete;
 
   public:
-    int DisassembleFile();
+    int Process();
     explicit Disassemble8080(const char *);
 
   private:
